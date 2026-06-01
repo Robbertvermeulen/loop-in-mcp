@@ -9,11 +9,13 @@
   },
   "userConfig": {
     "loop_base_url": {
+      "title": "Loop backend URL",
       "type": "string",
       "description": "Loop backend base URL. Default is the hosted instance; override for self-hosted or local dev.",
       "default": "https://loop-in-mcp.fly.dev"
     },
     "loop_token": {
+      "title": "Loop API token",
       "type": "string",
       "description": "Leave blank if you don't have one yet — run /loop-in-connect after install. Otherwise paste your Loop API token (starts with lp_).",
       "default": "",
