@@ -10,8 +10,8 @@
   "userConfig": {
     "loop_base_url": {
       "type": "string",
-      "description": "Loop backend base URL (use http://localhost:3002 for local dev, https://loop.app for production)",
-      "default": "https://loop.app"
+      "description": "Loop backend base URL. Default is the hosted instance; override for self-hosted or local dev.",
+      "default": "https://loop-in-mcp.fly.dev"
     },
     "loop_token": {
       "type": "string",
