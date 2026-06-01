@@ -7,7 +7,7 @@ Create a marketplace repo at `Robbertvermeulen/loop-in-mcp` with:
 - `plugins/loop-in-mcp/` containing the plugin with `.claude-plugin/plugin.json`, `skills/`, and `slash-commands/` directories
 - `.mcp.json` (or inline `mcpServers` in `plugin.json`) declaring the HTTP MCP server
 - Users install via `/plugin marketplace add Robbertvermeulen/loop-in-mcp` then `/plugin install loop-in-mcp@loop-in-mcp`
-- For per-user auth tokens, use a `/loop-connect` slash command that writes to `~/.claude.json` using `claude mcp add` CLI or `claude mcp add-json` to inject `Authorization: Bearer` headers
+- For per-user auth tokens, use a `/loop-in-connect` slash command that writes to `~/.claude.json` using `claude mcp add` CLI or `claude mcp add-json` to inject `Authorization: Bearer` headers
 
 ---
 
@@ -28,7 +28,7 @@ Robbertvermeulen/loop-in-mcp/
 │       │       └── SKILL.md      # Main skill
 │       ├── commands/             # Or use slash-commands/ for clarity
 │       │   ├── loop-in.md        # /loop-in command
-│       │   └── loop-connect.md   # /loop-connect command
+│       │   └── loop-in-connect.md   # /loop-in-connect command
 │       ├── .mcp.json             # MCP server config (alternative: inline in plugin.json)
 │       ├── README.md
 │       └── LICENSE
@@ -326,7 +326,7 @@ When users enable the plugin, Claude Code prompts them for these values and inje
 
 1. **Use `userConfig` in `plugin.json`** to prompt for the token at plugin enable time
 2. **Declare the MCP server inline** or in `.mcp.json` with `${user_config.loop_token}`
-3. **Add a slash command** (`/loop-connect`) that users can run to reconnect or refresh the token
+3. **Add a slash command** (`/loop-in-connect`) that users can run to reconnect or refresh the token
 
 **Example workflow:**
 
@@ -334,7 +334,7 @@ When users enable the plugin, Claude Code prompts them for these values and inje
 2. Claude Code prompts: "Enter your Loop API token"
 3. Token stored securely in keychain (if `sensitive: true`)
 4. MCP server uses token at connection time via `${user_config.loop_token}`
-5. If token expires, user runs `/loop-connect` to re-enter it
+5. If token expires, user runs `/loop-in-connect` to re-enter it
 
 **Not recommended:**
 - Do NOT hardcode tokens in manifests
@@ -461,9 +461,9 @@ claude mcp add-json loop \
 - `--scope project`: writes to `.mcp.json` in the project root
 - `--scope local`: same as `--scope user` but in a local project entry
 
-### Recommended Pattern: Slash Command for `/loop-connect`
+### Recommended Pattern: Slash Command for `/loop-in-connect`
 
-Instead of asking users to manually run `claude mcp add`, create a `/loop-connect` slash command that:
+Instead of asking users to manually run `claude mcp add`, create a `/loop-in-connect` slash command that:
 
 1. Prompts the user for their Loop server URL and token
 2. Calls `claude mcp add-json` or writes directly to `~/.claude.json`
@@ -551,7 +551,7 @@ Claude will use the Loop MCP tools to create and send the request.
 
 ### Connection Management Command
 
-Location: `plugins/loop-in-mcp/commands/loop-connect.md`
+Location: `plugins/loop-in-mcp/commands/loop-in-connect.md`
 
 ```markdown
 ---
@@ -592,7 +592,7 @@ plugins/loop-in-mcp/
 │       └── reference.md         # Optional supporting docs
 ├── commands/
 │   ├── loop-in.md               # User slash command
-│   └── loop-connect.md          # Connection setup command
+│   └── loop-in-connect.md       # Connection setup command
 ├── .mcp.json                    # MCP server config (alternative: inline in plugin.json)
 ├── hooks/
 │   └── hooks.json               # Optional: event handlers
@@ -647,8 +647,8 @@ Based on the authoritative documentation, the following aspects are **either uns
 2. **Marketplace:** `.claude-plugin/marketplace.json` with one plugin entry pointing to `./plugins/loop-in-mcp`
 3. **Plugin manifest:** `plugins/loop-in-mcp/.claude-plugin/plugin.json` with name, version, and `userConfig` for server URL + token
 4. **MCP server:** Inline in `plugin.json` as `mcpServers` with `type: "http"`, using `${user_config.loop_server_url}` and `${user_config.loop_token}` for the header
-5. **Skills & commands:** Subdirectories in `plugins/loop-in-mcp/` with `skills/loop-in/SKILL.md` and `commands/loop-in.md` and `commands/loop-connect.md`
+5. **Skills & commands:** Subdirectories in `plugins/loop-in-mcp/` with `skills/loop-in/SKILL.md` and `commands/loop-in.md` and `commands/loop-in-connect.md`
 6. **Installation:** Users run `/plugin marketplace add Robbertvermeulen/loop-in-mcp` then `/plugin install loop-in-mcp@loop-in-mcp`, enter token when prompted
-7. **Auth management:** Token stored securely via `userConfig` with `sensitive: true`; `/loop-connect` command can test/refresh if needed
+7. **Auth management:** Token stored securely via `userConfig` with `sensitive: true`; `/loop-in-connect` command can test/refresh if needed
 
 ---

@@ -89,10 +89,10 @@ Claude: [calls loop.list_requests({ status: 'submitted' })]
 
         Zal ik die aanpassingen meteen verwerken?
 
-## /loop-connect — first-run authentication
+## /loop-in-connect — first-run authentication
 
 ```
-You: /loop-connect
+You: /loop-in-connect
 
 Claude: Open this in your browser to connect:
 

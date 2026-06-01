@@ -1,0 +1,12 @@
+.git
+.worktrees
+node_modules
+apps/client-form/node_modules
+apps/client-form/dist
+*.db
+*.db-journal
+.env
+.env.local
+docs
+README.md
+.DS_Store
