@@ -11,7 +11,7 @@ You are about to walk the developer through a device-code authentication flow wi
 
 Determine the base URL for the Loop backend:
 - If `$ARGUMENTS` contains `--base-url=<url>`, use that.
-- Otherwise default to `https://loop.app` (production).
+- Otherwise default to `https://loop-in-mcp.fly.dev` (production).
 - Local development override: if the env var `LOOP_BASE_URL` is set, use that.
 
 Call this $BASE_URL throughout.
