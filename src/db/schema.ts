@@ -70,8 +70,26 @@ export const requests = sqliteTable(
   })
 );
 
+export const deviceCodes = sqliteTable(
+  'device_codes',
+  {
+    id: text('id').primaryKey(),
+    deviceCode: text('device_code').notNull().unique(),
+    userCode: text('user_code').notNull().unique(),
+    userId: text('user_id').references(() => users.id, { onDelete: 'cascade' }),
+    label: text('label').notNull(),
+    status: text('status').notNull(),
+    issuedTokenId: text('issued_token_id').references(() => apiTokens.id, { onDelete: 'set null' }),
+    approvedAt: integer('approved_at'),
+    exchangedAt: integer('exchanged_at'),
+    expiresAt: integer('expires_at').notNull(),
+    createdAt: integer('created_at').notNull(),
+  }
+);
+
 export type User = typeof users.$inferSelect;
 export type Request = typeof requests.$inferSelect;
 export type Project = typeof projects.$inferSelect;
 export type Session = typeof sessions.$inferSelect;
 export type ApiToken = typeof apiTokens.$inferSelect;
+export type DeviceCode = typeof deviceCodes.$inferSelect;

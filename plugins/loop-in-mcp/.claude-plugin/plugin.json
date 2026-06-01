@@ -1,0 +1,23 @@
+{
+  "name": "loop-in-mcp",
+  "version": "0.1.0",
+  "description": "Async human-in-the-loop input via shareable links — Claude asks people outside your coding session for input, you keep working.",
+  "homepage": "https://github.com/Robbertvermeulen/loop-in-mcp",
+  "author": {
+    "name": "Robbert Vermeulen",
+    "email": "robbertvermeulen@gmail.com"
+  },
+  "userConfig": {
+    "loop_base_url": {
+      "type": "string",
+      "description": "Loop backend base URL (use http://localhost:3002 for local dev, https://loop.app for production)",
+      "default": "https://loop.app"
+    },
+    "loop_token": {
+      "type": "string",
+      "description": "Leave blank if you don't have one yet — run /loop-connect after install. Otherwise paste your Loop API token (starts with lp_).",
+      "default": "",
+      "sensitive": true
+    }
+  }
+}

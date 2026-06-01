@@ -2,11 +2,16 @@ import { Hono } from 'hono';
 import { errorMiddleware } from './middleware/error';
 import { buildPublicApi } from './api/public';
 import { buildAppApi } from './api/app';
+import { buildDeviceApi } from './api/device';
 import { buildMcpHttpRoute } from './mcp/http';
 import { db as prodDb, type DB } from './db/client';
 import type { TestDB } from './db/test-db';
 import { resolve } from 'path';
 import { stat } from 'fs/promises';
+import { cookieAuth } from './middleware/cookie-auth';
+import { SignupPage } from './pages/signup';
+import { LoginPage } from './pages/login';
+import { DevicePage } from './pages/device';
 
 export function buildApp(deps: { db: DB | TestDB; publicBaseUrl: string; spaDistPath?: string }) {
   const app = new Hono();
@@ -15,6 +20,21 @@ export function buildApp(deps: { db: DB | TestDB; publicBaseUrl: string; spaDist
   app.route('/mcp', buildMcpHttpRoute({ db: deps.db, publicBaseUrl: deps.publicBaseUrl }));
   app.route('/api/app', buildAppApi(deps.db));
   app.route('/api/r', buildPublicApi(deps.db));
+  app.route('/api/device', buildDeviceApi(deps.db, deps.publicBaseUrl));
+  app.get('/signup', cookieAuth(deps.db), (c) => {
+    const code = c.req.query('code');
+    return c.html(<SignupPage userCode={code} />);
+  });
+  app.get('/login', cookieAuth(deps.db), (c) => {
+    const code = c.req.query('code');
+    return c.html(<LoginPage userCode={code} />);
+  });
+  app.get('/device', cookieAuth(deps.db), (c) => {
+    const code = c.req.query('code');
+    const approved = c.req.query('approved') === '1';
+    const user = c.get('user');
+    return c.html(<DevicePage code={code} loggedIn={!!user} success={approved} />);
+  });
   const SPA_DIST = deps.spaDistPath ?? resolve(import.meta.dir, '../apps/client-form/dist');
   app.get('/r', (c) => c.redirect('/r/', 302));
   app.get('/r/*', async (c) => {

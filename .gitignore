@@ -4,6 +4,5 @@ node_modules/
 *.db-journal
 .env
 .env.local
-dist/*
-!dist/.claude
+dist/
 .DS_Store

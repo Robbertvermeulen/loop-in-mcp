@@ -88,4 +88,26 @@ Claude: [calls loop.list_requests({ status: 'submitted' })]
         and Mark can no longer edit it]
 
         Zal ik die aanpassingen meteen verwerken?
+
+## /loop-connect — first-run authentication
+
+```
+You: /loop-connect
+
+Claude: Open this in your browser to connect:
+
+          https://loop.app/device?code=K8B2-R4WP
+
+        If asked, enter code: K8B2-R4WP
+
+        I'll wait here for you to approve. (Expires in 15 minutes.)
+
+        Waiting…
+
+[browser opens; you sign up; click Approve]
+
+Claude: Connected. Restart Claude Code (or open a new session) and
+        the Loop MCP will be active. Try /loop-in to send your first
+        questionnaire.
+```
 ```

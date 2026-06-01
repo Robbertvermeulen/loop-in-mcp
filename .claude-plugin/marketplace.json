@@ -1,0 +1,14 @@
+{
+  "name": "loop-in-mcp",
+  "owner": {
+    "name": "Robbert Vermeulen",
+    "email": "robbertvermeulen@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "loop-in-mcp",
+      "source": "./plugins/loop-in-mcp",
+      "description": "Async human-in-the-loop input via shareable links — Claude asks people outside your coding session for input, you keep working."
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "loop": {
+      "type": "http",
+      "url": "${user_config.loop_base_url}/mcp",
+      "headers": {
+        "Authorization": "Bearer ${user_config.loop_token}"
+      }
+    }
+  }
+}

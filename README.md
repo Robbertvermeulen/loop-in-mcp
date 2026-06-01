@@ -72,44 +72,36 @@ cd apps/client-form && bun run e2e
 
 ## Use Loop from Claude Code
 
-Loop ships a small skill + slash command for Claude Code. With both installed, Claude will recognize when you need input from someone outside the session ("Annet moet kiezen tussen…") and either suggest `/loop-in` or run it itself.
+Loop ships as a Claude Code plugin. Install once, connect, and `/loop-in` works naturally from any session.
 
-### Install (one time, ~30 seconds)
+### Install (one time, ~60 seconds)
 
-```bash
-# 1. Make sure you have the Loop MCP configured in Claude Code.
-#    Add this to your Claude Code MCP config (or use `claude mcp add`):
-#
-#    "loop": {
-#      "type": "http",
-#      "url": "https://loop.app/mcp",     # or your self-hosted base URL
-#      "headers": { "Authorization": "Bearer lp_..." }
-#    }
+In Claude Code:
 
-# 2. Drop the skill + slash command into Claude Code:
-mkdir -p ~/.claude/skills ~/.claude/commands
-cp dist/.claude/skills/loop-in.md     ~/.claude/skills/
-cp dist/.claude/commands/loop-in.md   ~/.claude/commands/
-
-# 3. Restart Claude Code (or just open a new session).
+```
+/plugin marketplace add Robbertvermeulen/loop-in-mcp
+/plugin install loop-in-mcp@loop-in-mcp
 ```
 
-That's it. In any session:
+You'll be prompted for `loop_base_url` (default `https://loop.app`) and `loop_token` (leave blank if you don't have one yet — `/loop-connect` will fill it for you).
 
-- Say something like *"Mark moet kiezen tussen layout A en B"* — the skill triggers and Claude proposes a draft.
-- Or run `/loop-in` explicitly with an optional oneliner.
+Then connect:
 
-See `docs/invocation/examples.md` for annotated example flows.
-
-### Per-project install
-
-If you want the skill scoped to a single project instead of globally:
-
-```bash
-mkdir -p .claude/skills .claude/commands
-cp dist/.claude/skills/loop-in.md     .claude/skills/
-cp dist/.claude/commands/loop-in.md   .claude/commands/
 ```
+/loop-connect
+```
+
+This opens your browser to sign up (or log in), approves the device, and writes a Loop API token into your MCP config automatically. Restart Claude Code and try `/loop-in`.
+
+### Self-hosted backend
+
+If you're running Loop yourself, pass `--base-url`:
+
+```
+/loop-connect --base-url=https://loop.yourdomain.com
+```
+
+See `docs/invocation/examples.md` for annotated example flows of both `/loop-in` and `/loop-connect`.
 
 ## Tests
 
@@ -126,3 +118,4 @@ bun test
 - [ ] Plan 3 — Dashboard
 - [ ] Plan 4 — File uploads (R2)
 - [x] Plan 5 — Invocation files (`loop-in` skill + slash command)
+- [x] Plan 6 — Plugin packaging + device-code auth
