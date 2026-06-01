@@ -3,7 +3,7 @@ description: Authenticate Claude Code to your Loop account. Opens a browser to a
 argument-hint: [optional: --base-url=https://...]
 ---
 
-# /loop-connect — link Claude Code to your Loop account
+# /loop-in-connect — link Claude Code to your Loop account
 
 You are about to walk the developer through a device-code authentication flow with Loop.
 
@@ -77,9 +77,9 @@ every `<interval>` seconds.
 
 Each response has `status`:
 - `pending` — keep waiting, sleep `interval` seconds, retry
-- `expired` — tell the developer it expired and stop. Suggest running `/loop-connect` again.
+- `expired` — tell the developer it expired and stop. Suggest running `/loop-in-connect` again.
 - `exchanged` with a `token` field — got it. Move to Step 4.
-- `exchanged` without a token — race condition (already exchanged). Tell the developer to re-run `/loop-connect`.
+- `exchanged` without a token — race condition (already exchanged). Tell the developer to re-run `/loop-in-connect`.
 
 Cap the loop at `expiresIn` seconds total wall-clock time. Between polls show a small "Waiting…" line so the developer knows you're alive.
 

@@ -81,12 +81,12 @@ Loop ships as a Claude Code plugin. Install once, connect, and `/loop-in` works 
 /plugin install loop-in-mcp@loop-in-mcp
 ```
 
-You'll be prompted for `loop_base_url` (default `https://loop-in-mcp.fly.dev` — the hosted instance) and `loop_token` (leave blank; `/loop-connect` fills it).
+You'll be prompted for `loop_base_url` (default `https://loop-in-mcp.fly.dev` — the hosted instance) and `loop_token` (leave blank; `/loop-in-connect` fills it).
 
 Then:
 
 ```
-/loop-connect
+/loop-in-connect
 ```
 
 Browser opens, sign up, approve. Token is written into your Claude Code MCP config. Restart Claude Code and try `/loop-in`.
@@ -96,7 +96,7 @@ Browser opens, sign up, approve. Token is written into your Claude Code MCP conf
 If you're running Loop yourself (locally or on your own server), override the base URL:
 
 ```
-/loop-connect --base-url=http://localhost:3002
+/loop-in-connect --base-url=http://localhost:3002
 ```
 
 See `docs/invocation/examples.md` for annotated example flows.
