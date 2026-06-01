@@ -20,7 +20,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/apps/client-form/node_modules ./apps/client-form/node_modules
 COPY . .
 
-RUN cd apps/client-form && bun run build
+RUN cd apps/client-form && bunx vite build
 
 # ---- Stage 3: runtime ----
 FROM oven/bun:1.3-alpine AS runtime
