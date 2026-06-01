@@ -76,32 +76,59 @@ Loop ships as a Claude Code plugin. Install once, connect, and `/loop-in` works 
 
 ### Install (one time, ~60 seconds)
 
-In Claude Code:
-
 ```
 /plugin marketplace add Robbertvermeulen/loop-in-mcp
 /plugin install loop-in-mcp@loop-in-mcp
 ```
 
-You'll be prompted for `loop_base_url` (default `https://loop.app`) and `loop_token` (leave blank if you don't have one yet — `/loop-connect` will fill it for you).
+You'll be prompted for `loop_base_url` (default `https://loop-in-mcp.fly.dev` — the hosted instance) and `loop_token` (leave blank; `/loop-connect` fills it).
 
-Then connect:
+Then:
 
 ```
 /loop-connect
 ```
 
-This opens your browser to sign up (or log in), approves the device, and writes a Loop API token into your MCP config automatically. Restart Claude Code and try `/loop-in`.
+Browser opens, sign up, approve. Token is written into your Claude Code MCP config. Restart Claude Code and try `/loop-in`.
 
-### Self-hosted backend
+### Self-hosted / local dev
 
-If you're running Loop yourself, pass `--base-url`:
+If you're running Loop yourself (locally or on your own server), override the base URL:
 
 ```
-/loop-connect --base-url=https://loop.yourdomain.com
+/loop-connect --base-url=http://localhost:3002
 ```
 
-See `docs/invocation/examples.md` for annotated example flows of both `/loop-in` and `/loop-connect`.
+See `docs/invocation/examples.md` for annotated example flows.
+
+## Deploy your own instance
+
+Loop's production deploy uses [Fly.io](https://fly.io) + [Turso](https://turso.tech) (managed libsql). Both have generous free tiers.
+
+```bash
+# 1. Provision the database
+turso db create loop-in-mcp
+TURSO_URL=$(turso db show loop-in-mcp --url)
+TURSO_TOKEN=$(turso db tokens create loop-in-mcp)
+
+# 2. Create the Fly app from the committed fly.toml
+fly apps create loop-in-mcp     # pick a different name if the global one is taken
+# Update fly.toml's `app` + PUBLIC_BASE_URL if you used a different name.
+
+# 3. Wire Turso to Fly
+fly secrets set \
+  DATABASE_URL="$TURSO_URL" \
+  DATABASE_AUTH_TOKEN="$TURSO_TOKEN" \
+  --app loop-in-mcp
+
+# 4. Deploy
+fly deploy --app loop-in-mcp
+
+# 5. Smoke
+curl https://<your-app>.fly.dev/healthz
+```
+
+The `release_command` in `fly.toml` runs migrations on every deploy. The app sleeps when idle (auto_stop_machines = "stop") and cold-starts on first request.
 
 ## Tests
 
@@ -119,3 +146,4 @@ bun test
 - [ ] Plan 4 — File uploads (R2)
 - [x] Plan 5 — Invocation files (`loop-in` skill + slash command)
 - [x] Plan 6 — Plugin packaging + device-code auth
+- [x] Plan 7 — Deploy to Fly.io with Turso
